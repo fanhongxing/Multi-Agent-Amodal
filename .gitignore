@@ -72,34 +72,16 @@ results/**
 Grounded-Segment-Anything/groundingdino_swint_ogc.pth
 Grounded-Segment-Anything/sam_vit_h_4b8939.pth
 
-# Common large artifacts (avoid committing)
+
+# General large ML artifacts (prevent oversized pushes)
 *.pth
 *.pt
 *.ckpt
-*.safetensors
 *.bin
+*.safetensors
 *.onnx
 *.tflite
 *.npz
 *.npy
-*.tar
-*.gz
-*.zip
-*.7z
-*.rar
-
-# Ignore any nested git repos content
-**/.git/
-
-# Optional heavy folders
-datasets/
-data/
-cache/
-tmp/
-temp/
-weights/
-checkpoints/
-outputs/
-runs/
 
 
