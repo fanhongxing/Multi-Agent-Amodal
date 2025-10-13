@@ -1,0 +1,105 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+ENV/
+env/
+venv/
+
+# PyInstaller
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyright/ruff caches
+.pyright/
+.ruff_cache/
+
+# VSCode
+.vscode/
+
+# Logs & debug
+*.log
+debug/
+debug_*/
+results/**
+
+
+
+# Model weights (explicit, prevent accidental commit)
+Grounded-Segment-Anything/groundingdino_swint_ogc.pth
+Grounded-Segment-Anything/sam_vit_h_4b8939.pth
+
+# Common large artifacts (avoid committing)
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.bin
+*.onnx
+*.tflite
+*.npz
+*.npy
+*.tar
+*.gz
+*.zip
+*.7z
+*.rar
+
+# Ignore any nested git repos content
+**/.git/
+
+# Optional heavy folders
+datasets/
+data/
+cache/
+tmp/
+temp/
+weights/
+checkpoints/
+outputs/
+runs/
+
+

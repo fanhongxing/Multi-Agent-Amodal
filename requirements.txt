@@ -1,0 +1,13 @@
+requests
+pillow
+fastapi
+uvicorn
+pydantic
+python-dotenv
+numpy
+openai>=1.30.0
+opencv-python
+torch
+torchvision
+diffusers
+python-multipart
