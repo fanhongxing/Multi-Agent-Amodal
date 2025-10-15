@@ -59,8 +59,11 @@ class GPTAdapter:
         azure_api_version: Optional[str] = None,
         azure_deployment: Optional[str] = None,
     ):
-        # backends: 'openrouter' (default) | 'azure'
-        self.backend = (backend or os.getenv("GPT_BACKEND", "openrouter")).lower()
+        # backends: 'openrouter' (default) | 'azure' | 'mock'
+        # Note: if backend not explicitly provided (arg/env), we'll auto-detect between OpenRouter and Azure below.
+        env_backend = os.getenv("GPT_BACKEND")
+        provided_backend = backend if backend is not None else env_backend
+        self.backend = (provided_backend or "openrouter").lower()
         # OpenRouter settings
         self.or_base_url = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
         self.or_api_key = os.getenv("OPENROUTER_API_KEY", "")
@@ -79,6 +82,59 @@ class GPTAdapter:
         # For Azure, you must pass the deployment name (not the model id). Allow override via env.
         # Fallback to a generic name if not provided.
         self.azure_deployment = azure_deployment or os.getenv("AZURE_OPENAI_DEPLOYMENT", os.getenv("AZURE_OPENAI_MODEL", "gpt-4o"))
+
+        # --- Backend auto-detection and validation ---
+        # Determine what configs are available
+        has_openrouter = bool(self.or_api_key)
+        has_azure = bool(self.azure_api_key and self.azure_endpoint and self.azure_deployment)
+
+        # If backend not explicitly set (neither arg nor env), auto pick
+        backend_explicit = provided_backend is not None
+        if not backend_explicit:
+            if self.backend not in {"openrouter", "azure", "mock"}:
+                # Unknown default, normalize to openrouter for selection below
+                self.backend = "openrouter"
+            if self.backend == "openrouter" and not has_openrouter and has_azure:
+                self.backend = "azure"
+            elif self.backend == "azure" and not has_azure and has_openrouter:
+                self.backend = "openrouter"
+
+        # Enforce: one of OpenRouter or Azure must be configured unless in mock backend
+        if self.backend == "mock":
+            # Test/dry-run mode: do not require external keys
+            return
+
+        if self.backend == "openrouter":
+            if not has_openrouter:
+                # If user didn't explicitly pick openrouter and Azure is available, switch; else error
+                if not backend_explicit and has_azure:
+                    self.backend = "azure"
+                else:
+                    raise RuntimeError(
+                        "GPTAdapter: Missing OpenRouter config. Set OPENROUTER_API_KEY, or configure Azure via "
+                        "AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_DEPLOYMENT."
+                    )
+        elif self.backend == "azure":
+            if not has_azure:
+                # If user didn't explicitly pick azure and OpenRouter is available, switch; else error
+                if not backend_explicit and has_openrouter:
+                    self.backend = "openrouter"
+                else:
+                    raise RuntimeError(
+                        "GPTAdapter: Missing Azure OpenAI config. Set AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT, "
+                        "and AZURE_OPENAI_DEPLOYMENT (optionally AZURE_OPENAI_API_VERSION). Or configure OPENROUTER_API_KEY."
+                    )
+        else:
+            # Unknown backend: try to auto-resolve; else error
+            if has_openrouter:
+                self.backend = "openrouter"
+            elif has_azure:
+                self.backend = "azure"
+            else:
+                raise RuntimeError(
+                    "GPTAdapter: No LLM backend configured. Configure either OPENROUTER_API_KEY or Azure OpenAI (AZURE_OPENAI_API_KEY, "
+                    "AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_DEPLOYMENT)."
+                )
 
     # --- helpers for boundary_bbox ---
     @staticmethod

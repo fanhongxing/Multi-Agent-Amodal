@@ -73,7 +73,15 @@ pip install -r requirements.txt
 export SEG_BACKEND=sam
 export SEG_API_BASE=http://127.0.0.1:8050
 export INPAINT_API_BASE=http://127.0.0.1:8051
-# To integrate an LLM, optionally set OPENROUTER_API_KEY or Azure OpenAI related environment variables
+
+# LLM (choose ONE)
+# OpenRouter:
+export OPENROUTER_API_KEY="your_openrouter_key"
+# or Azure:
+export AZURE_OPENAI_API_KEY="your_azure_key"
+export AZURE_OPENAI_ENDPOINT="https://your-resource-name.openai.azure.com"
+export AZURE_OPENAI_API_VERSION="2024-05-01-preview"
+export AZURE_OPENAI_DEPLOYMENT="gpt-4o"
 ```
 
 
@@ -81,12 +89,12 @@ export INPAINT_API_BASE=http://127.0.0.1:8051
 
 ```zsh
 python main.py \
-  --image asset/surfboard.jpg \
-  --seg-text surfboard \
+  --image asset/phone.jpg \
+  --seg-text phone \
   --boundary-mode boundary_bbox \
   --seg-backend sam 
 ```
 
-Outputs are saved by default to `./results/<seg-text>/`, e.g., `./results/cat/`.
+Outputs are saved by default to `./results/<seg-text>/`, e.g., `./results/phone/`.
 
 ---
