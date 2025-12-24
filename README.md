@@ -1,4 +1,9 @@
-🚧 This project is under active development and currently unstable. A stable version is expected by the end of October.
+# Multi-agent amodal completion: Direct synthesis with fine-grained semantic guidance
+
+**Authors:** Hongxing Fan, Lipeng Wang, Haohua Chen, Zehuan Huang, Jiangtao Wu, Lu Sheng  
+**Conference:** Proceedings of the 33rd ACM International Conference on Multimedia (ACM MM 2025)
+
+---
 
 ## Quick Start: Set Up Three Separate Environments (Recommended)
 
@@ -98,3 +103,17 @@ python main.py \
 Outputs are saved by default to `./results/<seg-text>/`, e.g., `./results/phone/`.
 
 ---
+
+## Citation
+
+If you find this project useful for your research, please consider citing our paper:
+
+```bibtex
+@inproceedings{fan2025multi,
+  title={Multi-agent amodal completion: Direct synthesis with fine-grained semantic guidance},
+  author={Fan, Hongxing and Wang, Lipeng and Chen, Haohua and Huang, Zehuan and Wu, Jiangtao and Sheng, Lu},
+  booktitle={Proceedings of the 33rd ACM International Conference on Multimedia},
+  pages={9911--9919},
+  year={2025}
+}
+```
